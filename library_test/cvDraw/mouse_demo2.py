@@ -17,17 +17,18 @@ def draw_circle(event, x, y, flags, param):
         ix, iy = x, y
     # 当移动鼠标时绘制图形，event可以查看移动效果，flag检测是否发生单击
     elif event == cv2.EVENT_MOUSEMOVE and flags == cv2.EVENT_FLAG_LBUTTON:
-        # if drawing:
-        #     if mode:
-        #         cv2.rectangle(img, (ix, iy), (x, y), (0, 255, 0), -1)
-        #     else:
-        #         # 绘制圆圈，圆点连成线，3代表笔的粗细
-        #         cv2.circle(img, (x, y), 3, (0, 255, 0), -1)
+        if drawing:
+            if mode:
+                cv2.rectangle(img, (ix, iy), (x, y), (0, 255, 0), -1)
+            else:
+                # 绘制圆圈，圆点连成线，3代表笔的粗细
+                cv2.circle(img, (x, y), 3, (0, 255, 0), -1)
         pass
     # 当松开鼠标时停止绘制
     elif event == cv2.EVENT_LBUTTONUP:
-        cv2.rectangle(img, (ix, iy), (x, y), (0, 255, 0, 100), -1)
-        drawing = False
+        # cv2.rectangle(img, (ix, iy), (x, y), (0, 255, 0, 100), -1)
+        # drawing = False
+        pass
 
 
 # 创建图像与窗口并将窗口与回调函数进行绑定
