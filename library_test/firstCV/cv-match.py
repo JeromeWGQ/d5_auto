@@ -53,7 +53,7 @@ def qtpixmap_to_cvimg(qtpixmap):
 
 
 # from PyQt5.QtGui import QImage
-
+# pyqt的截图转换到opencv可以读的格式，这个测试是可用的
 def QImageToCvMat(incomingImage):
     '''  Converts a QImage into an opencv MAT format  '''
 
