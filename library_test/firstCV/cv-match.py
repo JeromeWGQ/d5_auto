@@ -77,9 +77,9 @@ def main(argv):
 
     global img
     global templ
-    # img = cv.imread(sys.argv[1], cv.IMREAD_COLOR)
-    img_src = getScreenshot('d5_1')
-    img = QImageToCvMat(img_src)
+    img = cv.imread(sys.argv[1], cv.IMREAD_COLOR)
+    # img_src = getScreenshot('d5_1')
+    # img = QImageToCvMat(img_src)
     templ = cv.imread(sys.argv[2], cv.IMREAD_COLOR)
     if (len(sys.argv) > 3):
         global use_mask
@@ -111,10 +111,10 @@ def MatchingMethod(param):
     start = time.time()
 
     method_accepts_mask = (cv.TM_SQDIFF == match_method or match_method == cv.TM_CCORR_NORMED)
-    if (use_mask and method_accepts_mask):
-        result = cv.matchTemplate(img, templ, match_method, None, mask)
-    else:
-        result = cv.matchTemplate(img, templ, match_method)
+    # if (use_mask and method_accepts_mask):
+    result = cv.matchTemplate(img, templ, match_method, None, mask)
+    # else:
+    #     result = cv.matchTemplate(img, templ, match_method)
 
     end = time.time()
     print(end - start)
