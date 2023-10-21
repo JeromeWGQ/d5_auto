@@ -35,7 +35,7 @@ class MyWindow(QWidget, QObject):
         # 鼠标是否松开
         self.flag = False
         self.pixmap = None
-        #保存文件的地址
+        # 保存文件的地址
         self.file_path = "~/Documents/Screen"
         self.lbl = QLabel(self)
 
@@ -158,4 +158,3 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = MyWindow()
     app.exec_()
-

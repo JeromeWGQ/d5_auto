@@ -39,8 +39,8 @@ def getScreenshot(window_name):
     return img
     # img.save(window_name + '.bmp')
 
-def qtpixmap_to_cvimg(qtpixmap):
 
+def qtpixmap_to_cvimg(qtpixmap):
     qimg = qtpixmap.toImage()
     temp_shape = (qimg.height(), qimg.bytesPerLine() * 8 // qimg.depth())
     temp_shape += (4,)
@@ -66,7 +66,6 @@ def QImageToCvMat(incomingImage):
     ptr.setsize(height * width * 4)
     arr = np.frombuffer(ptr, np.uint8).reshape((height, width, 4))
     return arr
-
 
 
 def main(argv):
