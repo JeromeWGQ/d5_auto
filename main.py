@@ -32,7 +32,10 @@ def get_screenshot(window_name):
 
     time.sleep(0.001)
     img = screen.grabWindow(hwnd).toImage()
-    return img
+
+    left, top, right, bottom = win32gui.GetWindowRect(hwnd)
+
+    return img, left, top
 
 
 def compare_pic(shot, pic_name, x, y):
@@ -49,8 +52,12 @@ def compare_pic_buffer(shot, pic_name, x, y):
     return -buffer < diff_r < buffer and -buffer < diff_g < buffer and -buffer < diff_b < buffer
 
 
+def click_window(left, top, x, y):
+    pyautogui.click(left + x, top + y)
+
+
 def judge_scene(window_name):
-    shot = get_screenshot(window_name)
+    shot, left, top = get_screenshot(window_name)
     if (compare_pic(shot, 'gaming', 58, 39)
             and compare_pic(shot, 'gaming', 62, 41)
             and compare_pic(shot, 'gaming', 429, 349)
@@ -120,96 +127,109 @@ def judge_scene(window_name):
         # is_1_fire = False
         # is_2_fire = False
 
-        # 开始逻辑判断
+        # 新逻辑判断
         if is_l2:
-            if random.random() < 0.45:
-                if is_throw1:
-                    print('---> 扔出娃1')
-                    pyautogui.press('num1')
-                elif is_1_fire:
-                    print('---> 娃1找人中')
-                    pyautogui.press('num5')
-                elif random.random() < 0.2:
-                    print('---> 给娃1传火')
-                    pyautogui.press('num7')
-                else:
-                    if is_1_still:
-                        print('---> 目标可能在附近，传娃1刷刀')
-                        pyautogui.press('num3')
-                    elif is_2_still:
-                        print('---> 目标可能在附近，传娃2刷刀')
-                        pyautogui.press('num4')
-                    else:
-                        print('---> 两娃都在CD')
-                        if is_hear and random.random() < 0.3:
-                            pyautogui.press('num6')
-                        else:
-                            pyautogui.press('num5')
-                    time.sleep(3)
-            elif random.random() < 0.9:
-                if is_throw2:
-                    print('---> 扔出娃2')
-                    pyautogui.press('num2')
-                elif is_2_fire:
-                    print('---> 娃2找人中')
-                    pyautogui.press('num5')
-                elif random.random() < 0.2:
-                    print('---> 给娃2传火')
-                    pyautogui.press('num8')
-                else:
-                    if is_1_still:
-                        print('---> 目标可能在附近，传娃1刷刀')
-                        pyautogui.press('num3')
-                    elif is_2_still:
-                        print('---> 目标可能在附近，传娃2刷刀')
-                        pyautogui.press('num4')
-                    else:
-                        print('---> 两娃都在CD')
-                        if is_hear and random.random() < 0.3:
-                            pyautogui.press('num6')
-                        else:
-                            pyautogui.press('num5')
-                    time.sleep(3)
-            else:
-                print('---> 开始聆听')
-                pyautogui.press('num6')
+            pass
         elif is_l1:
-            if random.random() < 0.8:
-                if is_throw1:
-                    print('---> 扔出娃1')
-                    pyautogui.press('num1')
-                elif is_1_fire:
-                    print('---> 娃1找人中')
-                    pyautogui.press('num5')
-                elif random.random() < 0.2:
-                    print('---> 给娃1传火')
-                    pyautogui.press('num7')
-                else:
-                    if is_1_still:
-                        print('---> 目标可能在附近，传娃1刷刀')
-                        pyautogui.press('num3')
-                    else:
-                        print('---> 娃在CD')
-                        if is_hear and random.random() < 0.3:
-                            pyautogui.press('num6')
-                        else:
-                            pyautogui.press('num5')
-                    time.sleep(3)
-            else:
-                print('---> 开始聆听')
-                pyautogui.press('num6')
+            pass
         elif is_hear:
             print('---> 开始聆听')
             pyautogui.press('num6')
         else:
             print('---> 才刚开局')
             pyautogui.press('num5')
+
+        # 开始逻辑判断
+        # if is_l2:
+        #     if random.random() < 0.5:
+        #         if is_throw1:
+        #             print('---> 扔出娃1')
+        #             pyautogui.press('num1')
+        #         elif is_1_fire:
+        #             print('---> 娃1找人中')
+        #             pyautogui.press('num5')
+        #         elif random.random() < 0.6:
+        #             print('---> 给娃1传火')
+        #             pyautogui.press('num7')
+        #         else:
+        #             print('---> 传娃1刷刀')
+        #             pyautogui.press('num3')
+        #             # if is_1_still:
+        #             #     print('---> 目标可能在附近，传娃1刷刀')
+        #             #     pyautogui.press('num3')
+        #             # elif is_2_still:
+        #             #     print('---> 目标可能在附近，传娃2刷刀')
+        #             #     pyautogui.press('num4')
+        #             # else:
+        #             #     print('---> 两娃都在CD')
+        #             #     if is_hear and random.random() < 0.3:
+        #             #         pyautogui.press('num6')
+        #             #     else:
+        #             #         pyautogui.press('num5')
+        #             time.sleep(3)
+        #     else:
+        #         if is_throw2:
+        #             print('---> 扔出娃2')
+        #             pyautogui.press('num2')
+        #         elif is_2_fire:
+        #             print('---> 娃2找人中')
+        #             pyautogui.press('num5')
+        #         elif random.random() < 0.6:
+        #             print('---> 给娃2传火')
+        #             pyautogui.press('num8')
+        #         else:
+        #             print('---> 传娃2刷刀')
+        #             pyautogui.press('num4')
+        #             # if is_1_still:
+        #             #     print('---> 目标可能在附近，传娃1刷刀')
+        #             #     pyautogui.press('num3')
+        #             # elif is_2_still:
+        #             #     print('---> 目标可能在附近，传娃2刷刀')
+        #             #     pyautogui.press('num4')
+        #             # else:
+        #             #     print('---> 两娃都在CD')
+        #             #     if is_hear and random.random() < 0.3:
+        #             #         pyautogui.press('num6')
+        #             #     else:
+        #             #         pyautogui.press('num5')
+        #             time.sleep(3)
+        # elif is_l1:
+        #     if random.random() < 0.8:
+        #         if is_throw1:
+        #             print('---> 扔出娃1')
+        #             pyautogui.press('num1')
+        #         elif is_1_fire:
+        #             print('---> 娃1找人中')
+        #             pyautogui.press('num5')
+        #         elif random.random() < 0.4:
+        #             print('---> 给娃1传火')
+        #             pyautogui.press('num7')
+        #         else:
+        #             if is_hear and random.random() < 0.2:
+        #                 print('---> 聆听一下')
+        #                 pyautogui.press('num6')
+        #             else:
+        #                 print('---> 传娃1刷刀')
+        #                 pyautogui.press('num3')
+        #             time.sleep(3)
+        #     elif is_hear:
+        #         print('---> 开始聆听')
+        #         pyautogui.press('num6')
+        #     else:
+        #         print('---> 转转')
+        #         pyautogui.press('num5')
+        # elif is_hear:
+        #     print('---> 开始聆听')
+        #     pyautogui.press('num6')
+        # else:
+        #     print('---> 才刚开局')
+        #     pyautogui.press('num5')
     elif (compare_pic(shot, 'scene-main', 575, 280)
           and compare_pic(shot, 'scene-main', 592, 295)
           and compare_pic(shot, 'scene-main', 575, 337)
           and compare_pic(shot, 'scene-main', 581, 364)):
-        if (compare_pic(shot, 'scene-main-matching', 37, 139)
-                and compare_pic(shot, 'scene-main-matching', 105, 221)):
+        if (compare_pic_buffer(shot, 'scene-main-matching', 37, 139)
+                and compare_pic_buffer(shot, 'scene-main-matching', 105, 221)):
             print('---> 等待匹配')
         else:
             print('---> 主菜单，进入匹配')
@@ -218,16 +238,20 @@ def judge_scene(window_name):
     elif (compare_pic(shot, 'scene-common-box', 284, 345)
           and compare_pic(shot, 'scene-common-box', 363, 364)):
         print('---> 确认框')
-    elif (compare_pic(shot, 'scene-matched', 293, 322)
-          and compare_pic(shot, 'scene-matched', 344, 322)):
+        click_window(left, top, 300, 350)
+    elif (compare_pic_buffer(shot, 'scene-matched', 293, 322)
+          and compare_pic_buffer(shot, 'scene-matched', 344, 322)):
         print('---> 排到人了')
+        click_window(left, top, 310, 322)
     elif (compare_pic(shot, 'scene-prepare', 469, 356)
           and compare_pic(shot, 'scene-prepare', 556, 354)
           and compare_pic(shot, 'scene-prepare', 552, 365)):
         print('---> 没点准备')
+        click_window(left, top, 500, 360)
     elif (compare_pic(shot, 'scene-finish', 284, 357)
           and compare_pic(shot, 'scene-finish', 356, 372)):
         print('---> 结算界面')
+        click_window(left, top, 300, 360)
     else:
         print('未知场景')
     print()
