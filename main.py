@@ -72,6 +72,7 @@ def judge_scene(window_name):
         is_2_still = False
         is_1_fire = False
         is_2_fire = False
+        fire_num = 0
         if (compare_pic(shot, 'gaming', 579, 188)
                 and compare_pic(shot, 'gaming', 578, 203)):
             print('聆听已充能')
@@ -106,6 +107,22 @@ def judge_scene(window_name):
         if compare_pic_buffer(shot, 'gaming-fire', 580, 274):
             print('娃2带火')
             is_2_fire = True
+        if (compare_pic(shot, 'gaming-fire0', 432, 317)
+                and compare_pic(shot, 'gaming-fire0', 432, 321)):
+            print('火剩余数量0')
+            fire_num = 0
+        if (compare_pic(shot, 'gaming-fire1', 433, 317)
+                and compare_pic(shot, 'gaming-fire1', 433, 322)):
+            print('火剩余数量1')
+            fire_num = 1
+        if (compare_pic(shot, 'gaming-fire2', 432, 318)
+                and compare_pic(shot, 'gaming-fire2', 432, 323)):
+            print('火剩余数量2')
+            fire_num = 2
+        if (compare_pic(shot, 'gaming-fire3', 432, 317)
+                and compare_pic(shot, 'gaming-fire3', 432, 322)):
+            print('火剩余数量3')
+            fire_num = 3
         # if (compare_pic_buffer(shot, 'gaming-find1', 529, 270)
         #         or compare_pic_buffer(shot, 'gaming-find2', 528, 270)
         #         or compare_pic_buffer(shot, 'gaming-find3', 529, 270)
@@ -127,11 +144,63 @@ def judge_scene(window_name):
         # is_1_fire = False
         # is_2_fire = False
 
-        # 新逻辑判断
+        # 调参区
+        l1_fire_judge_value = 0.6  # 一阶当娃身上没火时，多大概率传火（否则传娃攻击）
+        l2_fire_judge_value = 0.3  # 二阶当娃身上没火时，多大概率传火（否则传娃攻击）
+        sleep_time_after_attack = 5
+
+        rand = random.random()
+
+        # 逻辑判断v2
         if is_l2:
-            pass
+            if fire_num > 0:
+                if not is_1_fire:
+                    print('---> 给娃1传火')
+                    pyautogui.press('num7')
+                elif not is_2_fire:
+                    print('---> 给娃2传火')
+                    pyautogui.press('num8')
+            elif is_throw1:
+                print('---> 扔出娃1')
+                pyautogui.press('num1')
+            elif is_throw2:
+                print('---> 扔出娃2')
+                pyautogui.press('num2')
+            elif not is_1_fire:
+                if not is_2_fire and random.random() < 0.5:
+                    print('---> 传娃2刷刀')
+                    pyautogui.press('num4')
+                else:
+                    print('---> 传娃1刷刀')
+                    pyautogui.press('num3')
+                time.sleep(sleep_time_after_attack)
+            elif not is_2_fire:
+                print('---> 传娃2刷刀')
+                pyautogui.press('num4')
+                time.sleep(sleep_time_after_attack)
+            elif is_hear:
+                print('---> 双娃找人中，聆听一下')
+                pyautogui.press('num6')
+            else:
+                print('---> 双娃找人中，闲逛一下')
+                pyautogui.press('num5')
         elif is_l1:
-            pass
+            if fire_num > 0 and not is_1_fire:
+                print('---> 给娃1传火')
+                pyautogui.press('num7')
+            elif is_throw1:
+                print('---> 扔出娃1')
+                pyautogui.press('num1')
+            elif is_1_still and is_hear:
+                print('---> 聆听一下')
+                pyautogui.press('num6')
+            elif not is_1_fire:
+                print('---> 传娃1刷刀')
+                pyautogui.press('num3')
+                time.sleep(sleep_time_after_attack)
+            else:
+                print('---> 娃1找人中，闲逛一下')
+                pyautogui.press('num5')
         elif is_hear:
             print('---> 开始聆听')
             pyautogui.press('num6')
@@ -139,7 +208,7 @@ def judge_scene(window_name):
             print('---> 才刚开局')
             pyautogui.press('num5')
 
-        # 开始逻辑判断
+        # 逻辑判断v1
         # if is_l2:
         #     if random.random() < 0.5:
         #         if is_throw1:
@@ -234,7 +303,7 @@ def judge_scene(window_name):
         else:
             print('---> 主菜单，进入匹配')
             pyautogui.press('\\')
-        time.sleep(5)
+        time.sleep(4)
     elif (compare_pic(shot, 'scene-common-box', 284, 345)
           and compare_pic(shot, 'scene-common-box', 363, 364)):
         print('---> 确认框')
@@ -247,7 +316,7 @@ def judge_scene(window_name):
           and compare_pic(shot, 'scene-prepare', 556, 354)
           and compare_pic(shot, 'scene-prepare', 552, 365)):
         print('---> 没点准备')
-        click_window(left, top, 500, 360)
+        pyautogui.press(']')
     elif (compare_pic(shot, 'scene-finish', 284, 357)
           and compare_pic(shot, 'scene-finish', 356, 372)):
         print('---> 结算界面')
@@ -262,4 +331,4 @@ if __name__ == '__main__':
     print('===== 图片模板加载完成 =====\n')
     while True:
         judge_scene(win_target)
-        time.sleep(5)
+        time.sleep(4)
