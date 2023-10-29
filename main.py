@@ -11,6 +11,8 @@ import pyautogui
 
 # 雷电模拟器    640 * 360    160 ppi
 win_target = 'd5-1'
+play_times = 100 * 3
+mode = 2  # 1-屠匹 2-屠排
 
 
 def load_pic():
@@ -57,6 +59,7 @@ def click_window(left, top, x, y):
 
 
 def judge_scene(window_name):
+    global play_times
     shot, left, top = get_screenshot(window_name)
     if (compare_pic(shot, 'gaming', 58, 39)
             and compare_pic(shot, 'gaming', 62, 41)
@@ -298,11 +301,16 @@ def judge_scene(window_name):
           and compare_pic(shot, 'scene-main', 575, 337)
           and compare_pic(shot, 'scene-main', 581, 364)):
         if (compare_pic_buffer(shot, 'scene-main-matching', 37, 139)
-                and compare_pic_buffer(shot, 'scene-main-matching', 105, 221)):
-            print('---> 等待匹配')
-        else:
-            print('---> 主菜单，进入匹配')
+            and compare_pic_buffer(shot, 'scene-main-matching', 105, 221)) \
+                or (compare_pic_buffer(shot, 'scene-main-matching-rank', 47, 135)
+                    and compare_pic_buffer(shot, 'scene-main-matching-rank', 68, 139)):
+            print('---> 匹配/排位等人中')
+        elif mode == 1:
+            print('---> 主菜单，进入倒数第' + str(play_times / 3) + '局匹配')
             pyautogui.press('\\')
+        elif mode == 2:
+            print('---> 主菜单，进入倒数第' + str(play_times / 3) + '局排位')
+            pyautogui.press('[')
         time.sleep(4)
     elif (compare_pic(shot, 'scene-common-box', 284, 345)
           and compare_pic(shot, 'scene-common-box', 363, 364)):
@@ -321,6 +329,23 @@ def judge_scene(window_name):
           and compare_pic(shot, 'scene-finish', 356, 372)):
         print('---> 结算界面')
         click_window(left, top, 300, 360)
+        play_times -= 1
+    elif (compare_pic(shot, 'exp-levelup', 296, 324)
+          and compare_pic(shot, 'exp-levelup', 355, 340)):
+        print('---> 阅历升级')
+        click_window(left, top, 320, 330)
+    elif (compare_pic(shot, 'receive-ack', 292, 347)
+          and compare_pic(shot, 'receive-ack', 360, 361)):
+        print('---> 确认记录')
+        click_window(left, top, 320, 350)
+    elif (compare_pic(shot, 'exp-levelup-after', 218, 322)
+          and compare_pic(shot, 'exp-levelup-after', 431, 336)):
+        print('---> 阅历升级后')
+        click_window(left, top, 220, 325)
+    elif (compare_pic(shot, 'scene-rank-change', 295, 358)
+          and compare_pic(shot, 'scene-rank-change', 352, 372)):
+        print('---> 排位变化')
+        click_window(left, top, 300, 360)
     else:
         print('未知场景')
     print()
@@ -329,6 +354,6 @@ def judge_scene(window_name):
 if __name__ == '__main__':
     image_dict = load_pic()
     print('===== 图片模板加载完成 =====\n')
-    while True:
+    while play_times > 0:
         judge_scene(win_target)
-        time.sleep(4)
+        time.sleep(5)
