@@ -10,6 +10,10 @@ from PyQt5.QtGui import QPixmap
 gather_target = 'd5-1'
 
 
+# gather_target = '雷电多开器'
+# gather_target = 'd5_auto – gather.py'
+
+
 def get_screenshot(window_name):
     hwnd_title = dict()
 
@@ -18,7 +22,7 @@ def get_screenshot(window_name):
             hwnd_title.update({hwnd: win32gui.GetWindowText(hwnd)})
 
     win32gui.EnumWindows(get_all_hwnd, 0)
-    # print(hwnd_title.items())
+    print(hwnd_title.items())
     # for h, t in hwnd_title.items():
     #     if t != "":
     #         print(h, t)

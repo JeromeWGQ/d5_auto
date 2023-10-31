@@ -11,7 +11,7 @@ import pyautogui
 
 # 雷电模拟器    640 * 360    160 ppi
 win_target = 'd5-1'
-play_times = 100 * 3
+play_times = 1000 * 3
 mode = 2  # 1-屠匹 2-屠排
 
 
@@ -338,14 +338,31 @@ def judge_scene(window_name):
           and compare_pic(shot, 'receive-ack', 360, 361)):
         print('---> 确认记录')
         click_window(left, top, 320, 350)
-    elif (compare_pic(shot, 'exp-levelup-after', 218, 322)
-          and compare_pic(shot, 'exp-levelup-after', 431, 336)):
+    elif (compare_pic_buffer(shot, 'exp-levelup-after', 218, 322)
+          and compare_pic_buffer(shot, 'exp-levelup-after', 431, 336)):
         print('---> 阅历升级后')
         click_window(left, top, 220, 325)
     elif (compare_pic(shot, 'scene-rank-change', 295, 358)
           and compare_pic(shot, 'scene-rank-change', 352, 372)):
         print('---> 排位变化')
         click_window(left, top, 300, 360)
+    elif (compare_pic(shot, 'leidian-desktop', 260, 122)
+          and compare_pic(shot, 'leidian-desktop', 287, 143)):
+        print('---> 模拟器桌面')
+        click_window(left, top, 270, 130)
+    elif (compare_pic(shot, 'scene-system-ad', 56, 49)
+          and compare_pic(shot, 'scene-system-ad', 576, 296)
+          and compare_pic(shot, 'scene-system-ad', 593, 368)):
+        print('---> 系统公告')
+        click_window(left, top, 56, 49)
+    elif (compare_pic(shot, 'scene-login', 49, 385)
+          and compare_pic(shot, 'scene-login', 587, 343)):
+        print('---> 登录界面')
+        click_window(left, top, 300, 200)
+    elif (compare_pic(shot, 'scene-first-news', 65, 81)
+          and compare_pic(shot, 'scene-first-news', 288, 150)):
+        print('---> 主打栏目')
+        click_window(left, top, 41, 57)
     else:
         print('未知场景')
     print()
