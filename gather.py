@@ -8,8 +8,6 @@ from PyQt5.QtGui import QPixmap
 
 # 雷电模拟器    640 * 360    160 ppi
 gather_target = 'd5-1'
-
-
 # gather_target = '雷电多开器'
 # gather_target = 'd5_auto – gather.py'
 
@@ -34,7 +32,7 @@ def get_screenshot(window_name):
     win32gui.SendMessage(hwnd, win32con.WM_SYSCOMMAND, win32con.SC_RESTORE, 0)
     win32gui.SetForegroundWindow(hwnd)
 
-    time.sleep(0.001)
+    time.sleep(0.01)
     img = screen.grabWindow(hwnd).toImage()
     pic_name = input('截屏已完成，请输入场景名称：')
     img.save('pic/' + pic_name + '.png')

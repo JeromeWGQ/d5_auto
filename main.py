@@ -30,7 +30,10 @@ def get_screenshot(window_name):
     app = QApplication(sys.argv)
     screen = QApplication.primaryScreen()
     win32gui.SendMessage(hwnd, win32con.WM_SYSCOMMAND, win32con.SC_RESTORE, 0)
-    win32gui.SetForegroundWindow(hwnd)
+    try:
+        win32gui.SetForegroundWindow(hwnd)
+    except Exception:
+        print('窗口置顶异常')
 
     time.sleep(0.001)
     img = screen.grabWindow(hwnd).toImage()
@@ -61,10 +64,12 @@ def click_window(left, top, x, y):
 def judge_scene(window_name):
     global play_times
     shot, left, top = get_screenshot(window_name)
-    if (compare_pic(shot, 'gaming', 58, 39)
-            and compare_pic(shot, 'gaming', 62, 41)
-            and compare_pic(shot, 'gaming', 429, 349)
-            and compare_pic(shot, 'gaming', 436, 366)):
+    time_now = time.strftime("%H:%M:%S", time.localtime())
+    is_ranking_time = False
+    if "12:00:01" < time_now < "13:59:59" or "18:00:01" < time_now < "21:59:59" or mode == 1:
+        is_ranking_time = True
+    if (compare_pic(shot, 'gaming', 57, 38)
+            and compare_pic(shot, 'gaming', 288, 63)):
         print('游戏中')
         is_hear = False
         is_l1 = False
@@ -76,6 +81,10 @@ def judge_scene(window_name):
         is_1_fire = False
         is_2_fire = False
         fire_num = 0
+        if (compare_pic(shot, 'gaming-running', 116, 17)
+                and compare_pic(shot, 'gaming-running', 148, 17)):
+            print('正在执行命令中')
+            return
         if (compare_pic(shot, 'gaming', 579, 188)
                 and compare_pic(shot, 'gaming', 578, 203)):
             print('聆听已充能')
@@ -300,6 +309,10 @@ def judge_scene(window_name):
           and compare_pic(shot, 'scene-main', 592, 295)
           and compare_pic(shot, 'scene-main', 575, 337)
           and compare_pic(shot, 'scene-main', 581, 364)):
+        if not is_ranking_time:
+            print('不在排位时段，退出游戏')
+            click_window(left, top, 243, 18)
+            return
         if (compare_pic_buffer(shot, 'scene-main-matching', 37, 139)
             and compare_pic_buffer(shot, 'scene-main-matching', 105, 221)) \
                 or (compare_pic_buffer(shot, 'scene-main-matching-rank', 47, 135)
@@ -312,12 +325,12 @@ def judge_scene(window_name):
             print('---> 主菜单，进入倒数第' + str(play_times / 3) + '局排位')
             pyautogui.press('[')
         time.sleep(4)
-    elif (compare_pic(shot, 'scene-common-box', 284, 345)
-          and compare_pic(shot, 'scene-common-box', 363, 364)):
+    elif (compare_pic_buffer(shot, 'scene-common-box', 289, 347)
+          and compare_pic_buffer(shot, 'scene-common-box', 355, 360)):
         print('---> 确认框')
         click_window(left, top, 300, 350)
-    elif (compare_pic_buffer(shot, 'scene-matched', 293, 322)
-          and compare_pic_buffer(shot, 'scene-matched', 344, 322)):
+    elif (compare_pic_buffer(shot, 'scene-matched', 297, 322)
+          and compare_pic_buffer(shot, 'scene-matched', 355, 340)):
         print('---> 排到人了')
         click_window(left, top, 310, 322)
     elif (compare_pic(shot, 'scene-prepare', 469, 356)
@@ -349,20 +362,35 @@ def judge_scene(window_name):
     elif (compare_pic(shot, 'leidian-desktop', 260, 122)
           and compare_pic(shot, 'leidian-desktop', 287, 143)):
         print('---> 模拟器桌面')
+        if not is_ranking_time:
+            print(time_now + ' | 不在排位时段，等待一分钟')
+            time.sleep(60)
+            return
         click_window(left, top, 270, 130)
-    elif (compare_pic(shot, 'scene-system-ad', 56, 49)
-          and compare_pic(shot, 'scene-system-ad', 576, 296)
-          and compare_pic(shot, 'scene-system-ad', 593, 368)):
+    elif (compare_pic_buffer(shot, 'scene-system-ad', 54, 50)
+          and compare_pic_buffer(shot, 'scene-system-ad', 57, 64)):
         print('---> 系统公告')
         click_window(left, top, 56, 49)
-    elif (compare_pic(shot, 'scene-login', 49, 385)
-          and compare_pic(shot, 'scene-login', 587, 343)):
+    elif (compare_pic_buffer(shot, 'scene-login', 49, 385)
+          and compare_pic_buffer(shot, 'scene-login', 587, 363)):
         print('---> 登录界面')
         click_window(left, top, 300, 200)
     elif (compare_pic(shot, 'scene-first-news', 65, 81)
           and compare_pic(shot, 'scene-first-news', 288, 150)):
         print('---> 主打栏目')
         click_window(left, top, 41, 57)
+    elif (compare_pic(shot, 'scene-sing', 367, 230)
+          and compare_pic(shot, 'scene-sing', 434, 245)):
+        print('---> 歌声')
+        click_window(left, top, 244, 239)
+    elif (compare_pic_buffer(shot, 'scene-need-return', 60, 52)
+          and compare_pic_buffer(shot, 'scene-need-return', 66, 59)):
+        print('---> 需要返回')
+        click_window(left, top, 62, 55)
+        time.sleep(0.5)
+        click_window(left, top, 62, 55)
+        time.sleep(0.5)
+        click_window(left, top, 62, 55)
     else:
         print('未知场景')
     print()
