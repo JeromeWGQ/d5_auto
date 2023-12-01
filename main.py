@@ -391,6 +391,16 @@ def judge_scene(window_name):
         click_window(left, top, 62, 55)
         time.sleep(0.5)
         click_window(left, top, 62, 55)
+    elif (compare_pic_buffer(shot, 'scene-7d', 140, 84)
+          and compare_pic_buffer(shot, 'scene-7d', 234, 105)):
+        print('---> 七天签到')
+        click_window(left, top, 43, 56)
+        time.sleep(0.5)
+    elif (compare_pic_buffer(shot, 'scene-friend-unlock', 287, 297)
+          and compare_pic_buffer(shot, 'scene-friend-unlock', 357, 312)):
+        print('---> 好友上限')
+        click_window(left, top, 310, 305)
+        time.sleep(0.5)
     else:
         print('未知场景')
     print()

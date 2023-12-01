@@ -58,12 +58,16 @@ def click_window(left, top, x, y):
 
 def judge_scene(window_name):
     shot, left, top = get_screenshot(window_name)
-    if (compare_pic(shot, 'touzi-first', 220, 337)
-            and compare_pic(shot, 'touzi-first', 309, 344)):
+    if (compare_pic(shot, 'touzi-first', 309, 344)
+            and compare_pic(shot, 'touzi-first', 338, 359)):
         print('---> 扔骰子')
         pyautogui.press('P')
-    elif (compare_pic(shot, 'touzi-confirm', 287, 347)
-          and compare_pic(shot, 'touzi-confirm', 358, 361)):
+    elif (compare_pic_buffer(shot, 'touzi-box', 193, 162)
+            and compare_pic_buffer(shot, 'touzi-box', 228, 168)):
+        print('---> 弹窗了')
+        click_window(left, top, 310, 345)
+    elif (compare_pic(shot, 'touzi-confirm', 285, 348)
+          and compare_pic(shot, 'touzi-confirm', 354, 362)):
         print('---> 确认记录')
         click_window(left, top, 300, 350)
     else:
